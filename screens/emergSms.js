@@ -8,13 +8,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 async function handleSend(emNumber) {
     try {
-      SMS.sendSMSAsync(emNumber, "* Inserte mensaje de Emergencia *")
+      await SMS.sendSMSAsync(emNumber, "* Inserte mensaje de Emergencia *")
     } catch (e) {
       // console.error(e)
     }
 }
 
-export default function emergSms() {
+export default function emergSms({number12}) {
   const [number, setNumber] = useState()
 
   const configureShake = onShake => {
@@ -45,10 +45,10 @@ export default function emergSms() {
   }
 
   configureShake(acceleration => {
-    getData()
-    setTimeout(() => {
-      handleSend(number)
-    }, 500)
+      console.log(number12);
+      handleSend(number12)
     console.log("shake with acceleration " + acceleration);    
   });
+
+  return (<></>);
 }
