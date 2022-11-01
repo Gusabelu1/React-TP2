@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "React-TP2",
+    "slug": "React-TP2",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
