@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { StyleSheet, Button, View } from 'react-native';
 import Contactos from './screens/contactos';
 import AcercaDe from './screens/acercaDe';
@@ -12,25 +12,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 function HomeScreen({ navigation }) {
-  const [number, setNumber] = useState(null)
-
-  const getData = async () => {
-    try {
-      setNumber(null)
-      const value = await AsyncStorage.getItem('tel_number')
-      if(value !== null) {
-        setNumber(value)
-      }
-    } catch(e) {
-        console.log(e)
-    }
-  }
-
-  useEffect(() => {
-    (async () => {
-      getData()
-    })();
-  }, []);
+  const { number, setNumber } = useContext(configTelContext);
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -52,7 +34,7 @@ function HomeScreen({ navigation }) {
       />
       { 
         number ?
-          <EmergSms number12={number} />
+          <EmergSms telNumber={number} />
         :
           null 
       }
@@ -95,17 +77,39 @@ function ConfigTelScreen() {
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+  const [number, setNumber] = useState(null)
+
+  const getData = async () => {
+    try {
+      setNumber(null)
+      const value = await AsyncStorage.getItem('tel_number')
+      if(value !== null) {
+        setNumber(value)
+      }
+    } catch(e) {
+        console.log(e)
+    }
+  }
+
+  useEffect(() => {
+    (async () => {
+      getData()
+    })();
+  }, []);
+
   return (
     <>
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name="Inicio" component={HomeScreen} />
-          <Stack.Screen name="Contactos" component={ContactosScreen} />
-          <Stack.Screen name="Hora y Temperatura" component={HoraTempScreen} />
-          <Stack.Screen name="Teléfono de Emergencia" component={ConfigTelScreen} />
-          <Stack.Screen name="Acerca De" component={AcercaDeScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <configTelContext.Provider value={{ number, setNumber }}>
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen name="Inicio" component={HomeScreen} />
+            <Stack.Screen name="Contactos" component={ContactosScreen} />
+            <Stack.Screen name="Hora y Temperatura" component={HoraTempScreen} />
+            <Stack.Screen name="Teléfono de Emergencia" component={ConfigTelScreen} />
+            <Stack.Screen name="Acerca De" component={AcercaDeScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </configTelContext.Provider>
     </>
   );
 }

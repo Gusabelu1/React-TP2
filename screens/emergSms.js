@@ -14,9 +14,7 @@ async function handleSend(emNumber) {
     }
 }
 
-export default function emergSms({number12}) {
-  const [number, setNumber] = useState()
-
+export default function emergSms({telNumber}) {
   const configureShake = onShake => {
     Accelerometer.setUpdateInterval(100);
     
@@ -31,22 +29,10 @@ export default function emergSms({number12}) {
     
     Accelerometer.addListener(onUpdate);
   };
-  
-  const getData = async () => {
-    try {
-      setNumber(null)
-      const value = await AsyncStorage.getItem('tel_number')
-      if(value !== null) {
-        await setNumber(value)
-      }
-    } catch(e) {
-      console.log(e)
-    }
-  }
 
   configureShake(acceleration => {
-      console.log(number12);
-      handleSend(number12)
+    console.log(telNumber);
+    handleSend(telNumber)
     console.log("shake with acceleration " + acceleration);    
   });
 
