@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { Accelerometer } from "expo-sensors";
 import { Text, View, TouchableOpacity } from "react-native";
 import { Linking, Platform  } from "react-native";
@@ -14,8 +14,11 @@ async function handleSend(emNumber) {
     }
 }
 
-export default function emergSms({telNumber}) {
+export default function emergSms() {
+  const { number, setNumber } = useContext(configTelContext);
+
   const configureShake = onShake => {
+    Accelerometer.removeAllListeners();
     Accelerometer.setUpdateInterval(100);
     
     const onUpdate = ({ x, y, z }) => {
@@ -31,9 +34,8 @@ export default function emergSms({telNumber}) {
   };
 
   configureShake(acceleration => {
-    console.log(telNumber);
-    handleSend(telNumber)
-    console.log("shake with acceleration " + acceleration);    
+    handleSend(number)
+    console.log("shake with acceleration " + acceleration);  
   });
 
   return (<></>);

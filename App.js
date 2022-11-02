@@ -34,7 +34,7 @@ function HomeScreen({ navigation }) {
       />
       { 
         number ?
-          <EmergSms telNumber={number} />
+            <EmergSms />
         :
           null 
       }

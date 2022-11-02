@@ -30,7 +30,7 @@ export default function ConfigTel() {
       <>
         <View style={styles.container}>
           <SafeAreaView style={styles.wrapper}>
-            <Text style={{textAlign: "center", paddingVertical: 20}}>{number}</Text>
+            <Text style={{textAlign: "center", paddingVertical: 20}}>Númer Guardado: {number}</Text>
             <PhoneInput
               ref={useRef(phoneInput)}
               value={telGuardado}
